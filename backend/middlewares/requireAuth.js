@@ -4,7 +4,7 @@ const { verifyJwt } = require('../utils/jwt');
 
 async function requireAuth(req, res, next) {
   try {
-    const token = req.headers.authorization.replace('Bearer ');
+    const token = req.headers.authorization.replace('Bearer ', '');
 
     if (!token)
       return new HttpError(
@@ -13,7 +13,7 @@ async function requireAuth(req, res, next) {
         'El usuario no se encuentra autorizado'
       ).send();
 
-    const { decoded } = verifyJwt(token);
+    const { decoded } = await verifyJwt(token);
 
     if (!decoded)
       return new HttpError(
